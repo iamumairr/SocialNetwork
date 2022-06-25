@@ -1,0 +1,75 @@
+﻿@model SocialNetwork.Models.PhotoPost
+
+@{
+    ViewData["Title"] = "Details - PhotoPost";
+}
+<div>
+    <h1 class="text-center text-info">
+        @ViewData["Title"]
+    </h1>
+    <hr />
+</div>
+<div>
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FileName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FileName)
+            <br />
+            <img width="280" height="220" src="~/images/@Model.FileName"/>
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Caption)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Caption)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TimeStamp)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TimeStamp)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.likes)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.likes)
+        </dd>
+    </dl>
+</div>
+<div>
+    @if (Model.Comments == null || Model.Comments.Count() == 0)
+    {
+        <p>No comments posted yet!</p>
+    }
+    else
+    {
+        foreach (var comment in Model.Comments)
+        {
+            <p>@comment.Text</p>
+        }
+    }
+</div>
+<hr />
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.PostId" class="btn btn-sm btn-primary" title="Edit">Edit</a>
+    <a asp-action="Like" asp-route-id="@Model.PostId" class="btn btn-sm btn-success" title="Like">
+        <i class="bi bi-hand-thumbs-up"></i>
+    </a>
+    <a asp-action="Unlike" asp-route-id="@Model.PostId" class="btn btn-sm btn-warning" title="Unlike">
+        <i class="bi bi-hand-thumbs-down"></i>
+    </a>
+    <a asp-action="Create" asp-route-id="@Model.PostId" asp-controller="Comments" class="btn btn-sm btn-info" title="Comment">
+        <i class="bi bi-chat-left-text"></i>
+        Comment
+    </a>
+    <a asp-action="Index" class="btn btn-sm btn-secondary">&lt;&lt;Back to Photo Posts</a>
+</div>

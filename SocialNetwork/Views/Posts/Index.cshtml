@@ -1,0 +1,134 @@
+﻿@model IEnumerable<SocialNetwork.Models.Post>
+
+@{
+    ViewData["Title"] = "Posts";
+}
+<div>
+    <h1 class="text-center text-info">
+        All Posts
+    </h1>
+    <hr />
+</div>
+
+<form asp-action="Index" method="get">
+    <p>
+        Find by Name:
+        <input type="text" name="userName" class="form-control-sm" />
+        <input type="submit" value="Search" class="btn btn-primary btn-sm" />
+        <a asp-action="Index" class="btn btn-secondary btn-sm">Back To Full List</a>
+    </p>
+</form>
+<div class="row mt-2">
+    <div class="col-md-12">
+        <a asp-action="Create" asp-controller="MessagePosts" class="btn btn-success btn-sm">Add New Message Post</a>
+        <a asp-action="Create" asp-controller="PhotoPosts" class="btn btn-info btn-sm">Add New Photo Post</a>
+    </div>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                PostID
+            </th>
+            <th>
+                User
+            </th>
+            <th>
+                Message
+            </th>
+            <th>
+                Photo
+            </th>
+            <th>
+                Caption
+            </th>
+            <th>
+                Timestamp
+            </th>
+            <th>
+                Likes
+            </th>
+            <th>
+                Comments
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            MessagePost message = null;
+            PhotoPost photo = null;
+
+            if (item is MessagePost)
+            {
+                message = (MessagePost)item;
+            }
+
+            if (item is PhotoPost)
+            {
+                photo = (PhotoPost)item;
+            }
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem=>item.PostId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem=>item.UserName)
+                </td>
+                <td>
+                    @if (message != null)
+                    {
+                        <span>@message.Message</span>
+                    }
+                    else
+                    {
+                        <span>null</span>
+                    }
+                </td>
+                <td>
+                    @if (photo != null)
+                    {
+                        <span>@photo.FileName</span>
+                    }
+                    else
+                    {
+                        <span>null</span>
+                    }
+                </td>
+                <td>
+                    @if (photo != null)
+                    {
+                        <span>@photo.Caption</span>
+                    }
+                    else
+                    {
+                        <span>null</span>
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem=>item.TimeStamp)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem=>item.likes)
+                </td>
+                <td>
+                    @if (item.Comments.Count() == 0)
+                    {
+                        <span>No comments added yet!</span>
+                    }
+                    else
+                    {
+                        @foreach (var comment in item.Comments)
+                        {
+                            <span>@comment.Text</span> <br />
+                        }
+                    }
+                </td>
+                <td>
+                    <a asp-action="Delete" asp-route-id="@item.PostId" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

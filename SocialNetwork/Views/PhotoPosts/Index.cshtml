@@ -1,0 +1,86 @@
+﻿@model IEnumerable<SocialNetwork.Models.PhotoPost>
+
+@{
+    ViewData["Title"] = "PostBook Photos";
+}
+<div>
+    <h1 class="text-center text-info">
+        @ViewData["Title"]
+    </h1>
+    <hr />
+</div>
+<div class="row mt-2">
+    <div class="col-md-12">
+        <a asp-action="Create" class="btn btn-success btn-sm">Add Photos</a>
+        <a asp-action="Index" asp-controller="MessagePosts" class="btn btn-info btn-sm">View Messages</a>
+    </div>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model=>model.PostId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FileName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Caption)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TimeStamp)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.likes)
+            </th>
+            <th>Comments</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem=> item.PostId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FileName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Caption)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TimeStamp)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.likes)
+                </td>
+                <td>
+                    @if (item.Comments.Count() == 0)
+                    {
+                        <span>No comments added yet!</span>
+                    }
+                    else
+                    {
+                        @foreach (var comment in item.Comments)
+                        {
+                            <span>@comment.Text</span> <br />
+                        }
+                    }
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.PostId" class="btn btn-success btn-sm">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.PostId" class="btn btn-info btn-sm">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.PostId" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
